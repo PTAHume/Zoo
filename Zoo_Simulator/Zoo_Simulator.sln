@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zoo_Simulator", "Zoo_Simulator.csproj", "{E63B05A7-28AF-4086-8203-6562DD55C71A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zoo_Simulator_Tests", "..\Zoo_Simulator_Tests\Zoo_Simulator_Tests.csproj", "{FCDF06A7-AB0E-4D78-B8F3-4446C9AB098A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E63B05A7-28AF-4086-8203-6562DD55C71A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63B05A7-28AF-4086-8203-6562DD55C71A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63B05A7-28AF-4086-8203-6562DD55C71A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63B05A7-28AF-4086-8203-6562DD55C71A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCDF06A7-AB0E-4D78-B8F3-4446C9AB098A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCDF06A7-AB0E-4D78-B8F3-4446C9AB098A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCDF06A7-AB0E-4D78-B8F3-4446C9AB098A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCDF06A7-AB0E-4D78-B8F3-4446C9AB098A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCD25C05-F42A-4FEF-AE4A-429C1B750E37}
+	EndGlobalSection
+EndGlobal
