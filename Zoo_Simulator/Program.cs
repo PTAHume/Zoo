@@ -2,12 +2,28 @@
 
 namespace Zoo_Simulator
 {
-    internal class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World");
-            Console.ReadKey();
+            Console.WriteLine("Type 'e' and press Enter to close the app \n");
+            Zoo.InitializeZoo();
+            while (true)
+            {
+                Zoo.Simulate();
+                var command = Console.ReadLine() ?? string.Empty;
+                if (string.Equals(command, "e", StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+            
+
+                if (string.Equals(command, "f", StringComparison.OrdinalIgnoreCase))
+                {
+                    //TO DO: Complete this
+                }
+            }
         }
     }
 }
