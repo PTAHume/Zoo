@@ -1,37 +1,30 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: Build and Test
 
-name: .NET
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+ 
+    runs-on:  windows-latest
+ 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.x
     - uses: actions/checkout@v1
-    - name: Setup .NET Test
-      uses: actions/setup-dotnet@v1	
-      with:	
-        dotnet-version: 4.0.x
-
-
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: ./Zoo_Simulator
-    - name: Build
-      run: dotnet build --no-restore
-      working-directory: ./Zoo_Simulator
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      name: Checkout Code
+     
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+     
+    - name: Restore NuGet Packages
+      run: nuget restore ./Zoo_Simulator/Zoo_Simulator.sln
+ 
+    - name: Build and Publish Web App
+      run: msbuild ./Zoo_Simulator/Zoo_Simulator.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+ 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: published_webapp
+        path: bin\Release\Publish
