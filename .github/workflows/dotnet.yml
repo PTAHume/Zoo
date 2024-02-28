@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
+    - name: Setup .NET Test
+      uses: actions/setup-dotnet@v1	
+      with:	
+        dotnet-version: 4.x
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./Zoo_Simulator
