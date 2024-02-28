@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Zoo_Simulator
 {
@@ -19,7 +18,7 @@ namespace Zoo_Simulator
 
         public abstract bool IsDead();
 
-        public void Feed(float amount)
+        public virtual void Feed(float amount)
         {
             Health += Health * (amount / 100f);
             Health = Math.Min(Health, 100f);

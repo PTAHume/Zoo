@@ -23,7 +23,6 @@ namespace Zoo_Simulator
                 _animals.Add(new Giraffe($"{AnimalType.Giraffe} {i}"));
                 _animals.Add(new Elephant($"{AnimalType.Elephant} {i}"));
             }
-
         }
 
         public static void FeedAnimals()
@@ -56,57 +55,12 @@ namespace Zoo_Simulator
                 }
             }
 
-            GetAnimalStatues();
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine("Animals have been fed, Press any key to continue....");
-            Console.ReadLine();
+           // GetAnimalStatues();
+
         }
 
-        public static void Simulate()
-        {
-            int time = 0;
-            Random random = new Random();
-            while (true)
-            {
-                if (!Console.IsOutputRedirected) Console.Clear();
-                Console.WriteLine($"Current time: {time} hours");
 
-                GetAnimalStatues();
-
-                if (!_animals.Any())
-                {
-                    Console.WriteLine("All animals have died. Game over! Press any key to close");
-                    Console.ReadLine();
-                    break;
-                }
-
-                Console.WriteLine(Environment.NewLine);
-                Console.WriteLine("Do you want to feed the animals? (yes/no) or Press X to close");
-                string input = Console.ReadLine();
-                if (input.ToLower() == "yes")
-                {
-                    if (!Console.IsOutputRedirected) Console.Clear();
-                    Console.WriteLine("Feeding animlas ....");
-                    FeedAnimals();
-                }
-                if (input.ToLower() == "x")
-                {
-                    break;
-                }
-
-                _animals.ForEach(x =>
-                {
-                    float percentage = random.Next(0, 21);
-                    x.UpdateHealth(percentage);
-                });
-
-                Console.WriteLine("Waiting for next check up, please wait ....");
-                time++;
-                System.Threading.Thread.Sleep(3000);//20000
-            }
-        }
-
-        private static void GetAnimalStatues()
+        public static void GetAnimalStatues()
         {
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine("Current status of animals:");
@@ -135,6 +89,16 @@ namespace Zoo_Simulator
             Console.WriteLine($"The zoo has ({_animals.Count(x => x.GetType() == typeof(Elephant))}) Elephant's remaining");
             Console.WriteLine($"The zoo has ({_animals.Count(x => x.GetType() == typeof(Monkey))}) Monkey's remaining");
             Console.WriteLine($"The zoo has ({_animals.Count(x => x.GetType() == typeof(Giraffe))}) Giraffe's remaining");
+        }
+
+        public static void UpdateAnimalsHealth()
+        {
+            Random random = new Random();
+            _animals.ForEach(x =>
+            {
+                float percentage = random.Next(0, 21);
+                x.UpdateHealth(percentage);
+            });
         }
     }
 }

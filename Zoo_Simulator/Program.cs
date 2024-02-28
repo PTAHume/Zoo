@@ -1,16 +1,56 @@
 ﻿using System;
+using System.Linq;
 
 namespace Zoo_Simulator
 {
     public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Wecome To Zoo Simulator v1.01 \n");
+            Console.WriteLine("Wecome To Zoo Simulator v1.02 \n");
 
             Zoo.InitializeZoo();
-            Zoo.Simulate();
- 
+            int time = 0;
+      
+            while (true)
+            {
+                if (!Console.IsOutputRedirected) Console.Clear();
+                Console.WriteLine($"Current time: {time} hours");
+
+                Zoo.GetAnimalStatues();
+
+                if (!Zoo.GetGroupedAnimals().Any())
+                {
+                    Console.WriteLine(Environment.NewLine);
+                    Console.WriteLine("All animals have died. Game over! Press any key to close");
+                    Console.ReadLine();
+                    break;
+                }
+
+                Console.WriteLine(Environment.NewLine);
+                Console.WriteLine("Do you want to feed the animals? Press Y for yes, Press any key for No or Press X to exit the game");
+                string input = Console.ReadLine();
+                if (input.ToLower() == "yes" || input.ToLower() == "y")
+                {
+                    if (!Console.IsOutputRedirected) Console.Clear();
+                    Console.WriteLine("Feeding animlas ....");
+                    Zoo.FeedAnimals();
+                    Zoo.GetAnimalStatues();
+                    Console.WriteLine(Environment.NewLine);
+                    Console.WriteLine("Animals have been fed, Press any key to continue....");
+                    Console.ReadLine();
+                }
+                if (input.ToLower() == "x")
+                {
+                    break;
+                }
+
+                Zoo.UpdateAnimalsHealth();
+
+                Console.WriteLine("Waiting for next check up, please wait ....");
+                time++;
+                System.Threading.Thread.Sleep(3000);//20000
+            }
         }
     }
 }

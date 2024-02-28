@@ -1,45 +1,127 @@
 ﻿using Zoo_Simulator;
 using Zoo_Simulator.Animals;
 
-namespace Zoo_Simulator_Tests
+namespace Zoo_Simulator_Tests;
+
+public class ZooTests
 {
-    public class ZooTests
+    [Fact]
+    public void CanCreateTheZoo()
     {
-        [Fact]
-        public void CanCreateTheZoo()
+        // Arrange
+        Zoo.InitializeZoo();
+
+        // Acert
+        Assert.True(Zoo.GetGroupedAnimals().Count == 15, "There should be 15 animals to to start with");
+        Assert.True(Zoo.GetGroupedAnimals().Count(x => x.Health == 100) == 15, "All animlas should start with 100% health");
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Monkey>().Count() == 5, "There should be 5 Monkeys start with");
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5, "There should be 5 Elephants start with");
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Giraffe>().Count() == 5, "There should be 5 Giraffes start with");
+    }
+
+    [Fact]
+    public void CanRunZooSimulation()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+
+        // Act
+        using var consoleOutput = new ConsoleOutput();
+        Zoo.GetAnimalStatues();
+
+        // Assert
+        List<string> list = consoleOutput.GetOuPut().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+        Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Monkey}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
+        Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Giraffe}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Giraffe}'s with 100% health");
+        Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Elephant}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Elephant}'s with 100% health");
+    }
+
+    [Fact]
+    public void CanFeedAnimals()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+        Zoo.GetGroupedAnimals().ForEach(x => x.Health = 50);
+
+        // Act
+        Zoo.GetAnimalStatues();
+        Zoo.FeedAnimals();
+        Zoo.GetAnimalStatues();
+
+        // Assert
+        Assert.DoesNotContain(Zoo.GetGroupedAnimals(), x => x.Health == 50);
+    }
+
+    [Fact]
+    public void CanKillAllAnimals()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+        Zoo.GetGroupedAnimals().ForEach(x => x.Health = 29);
+
+        // Act
+        Zoo.GetAnimalStatues();
+        Zoo.UpdateAnimalsHealth();
+        //Run twice because elephants have to stop walking before they can die
+        Zoo.GetAnimalStatues();
+        Zoo.UpdateAnimalsHealth();
+
+        // Assert
+        Assert.False(Zoo.GetGroupedAnimals().Any(), "All animlas should be dead");
+    }
+
+    [Fact]
+    public void EnsureElephansCantWalkWhenHumgry()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+
+        // Act
+        Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
+
+        // Assert
+        Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.CanWalk());
+        Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.IsDead());
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5);
+    }
+
+    [Fact]
+    public void EnsureElephansCantWalkBeforeTheyDie()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+        Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
+
+        // Act part 1
+        Zoo.GetAnimalStatues();
+        Zoo.UpdateAnimalsHealth();
+        Zoo.GetAnimalStatues();
+
+        // Assert part 2
+        Assert.False(Zoo.GetGroupedAnimals().OfType<Elephant>().Any(), "All Elephants shoould be dead");
+    }
+
+    [Fact]
+    public void EnsureElephansCanRecover()
+    {
+        // Arrange
+        Zoo.InitializeZoo();
+        Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
+
+        // Act
+        do
         {
-            // Arrange
-            Zoo.InitializeZoo();
-
-            // Act
-            using (var consoleOutput = new ConsoleOutput())
-            {
-                consoleOutput.SetIn("x");
-                Zoo.Simulate();
-
-                // Assert
-                List<string> list = consoleOutput.GetOuPut().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
-                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Monkey}") &&  p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
-                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Giraffe}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Giraffe}'s with 100% health");
-                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Elephant}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Elephant}'s with 100% health");
-            }
-        }
-
-        [Fact]
-        
-        public void CanFeedAnimals()
-        {
-            // Arrange
-            Zoo.InitializeZoo();
-            using var input = new StringReader("Any key");
-            Console.SetIn(input);
-
-            // Act
-            Zoo.GetGroupedAnimals().ForEach(x => x.Health = 50);
+            Zoo.GetAnimalStatues();
             Zoo.FeedAnimals();
-
-            // Assert
-            Assert.DoesNotContain(Zoo.GetGroupedAnimals(), x => x.Health == 50);
+            Zoo.GetAnimalStatues();
+            Zoo.UpdateAnimalsHealth();
         }
+        // Smetimes you have to feed the elephants a few ties to get them back on there feet
+        while (Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.Health > 70) < 5);
+
+        // Assert part 2
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.CanWalk()) == 5);
+        Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.IsDead());
+        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5);
     }
 }
