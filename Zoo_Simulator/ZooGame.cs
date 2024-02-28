@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Zoo_Simulator
 {
-    public static class Program
+    public static class ZooGame
     {
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for running consle application")]
         private static void Main(string[] args)
