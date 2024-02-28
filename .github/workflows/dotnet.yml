@@ -24,4 +24,11 @@ jobs:
 
       - name: Restore Packages
         run: nuget restore ./Zoo_Simulator/Zoo_Simulator.sln
+
+      - name: Build Solution
+        run: |
+          msbuild.exe ./Zoo_Simulator/Zoo_Simulator.sln /p:platform="Any CPU" /p:configuration="Release"
+        
+      - name: Run Tests
+        run: vstest.console.exe .\Zoo_Simulator_Tests\bin\Release\net8.0\Zoo_Simulator_Tests.dlll
  
