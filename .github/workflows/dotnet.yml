@@ -12,7 +12,7 @@ jobs:
       name: Checkout Code
      
     - name: Setup MSBuild Path
-      uses: Setup-MSBuild@v1
+      uses: phume/Setup-MSBuild@v1
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
        
@@ -22,7 +22,9 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Setup VSTest
-      uses: Setup-VSTest@v1
+      uses: phume/Setup-VSTest@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
      
     - name: Restore NuGet Packages
       run: nuget restore ./Zoo_Simulator/Zoo_Simulator.sln
