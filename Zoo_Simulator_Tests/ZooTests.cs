@@ -30,7 +30,7 @@ public class ZooTests
         Zoo.GetAnimalStatues();
 
         // Assert
-        List<string> list = consoleOutput.GetOuPut().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+        List<string> list = [.. consoleOutput.GetOuPut().Split(new string[] { Environment.NewLine }, StringSplitOptions.None)];
         Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Monkey}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
         Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Giraffe}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Giraffe}'s with 100% health");
         Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Elephant}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Elephant}'s with 100% health");
@@ -67,7 +67,7 @@ public class ZooTests
         Zoo.UpdateAnimalsHealth();
 
         // Assert
-        Assert.False(Zoo.GetGroupedAnimals().Any(), "All animlas should be dead");
+        Assert.True(Zoo.GetGroupedAnimals().Count == 0, "All animlas should be dead");
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class ZooTests
         // Assert
         Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.CanWalk());
         Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.IsDead());
-        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5);
+        Assert.Equal(5, Zoo.GetGroupedAnimals().OfType<Elephant>().Count());
     }
 
     [Fact]
@@ -107,7 +107,6 @@ public class ZooTests
         // Arrange
         Zoo.InitializeZoo();
         Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
-        var count = 0;
 
         // Act
         // Smetimes, you have to feed the elephants a few ties to get them back on there feet
@@ -125,8 +124,8 @@ public class ZooTests
         }
 
         // Assert
-        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.CanWalk()) == 5);
+        Assert.Equal(5, Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.CanWalk()));
         Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.IsDead());
-        Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5);
+        Assert.Equal(5, Zoo.GetGroupedAnimals().OfType<Elephant>().Count());
     }
 }

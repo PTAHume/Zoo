@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Zoo_Simulator
 {
     public static class Program
     {
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required for running consle application")]
         private static void Main(string[] args)
         {
             Console.WriteLine("Wecome To Zoo Simulator v1.02 \n");
