@@ -11,7 +11,7 @@ namespace Zoo_Simulator
 
             Zoo.InitializeZoo();
             int time = 0;
-      
+
             while (true)
             {
                 if (!Console.IsOutputRedirected) Console.Clear();
@@ -35,10 +35,8 @@ namespace Zoo_Simulator
                     if (!Console.IsOutputRedirected) Console.Clear();
                     Console.WriteLine("Feeding animlas ....");
                     Zoo.FeedAnimals();
-                    Zoo.GetAnimalStatues();
                     Console.WriteLine(Environment.NewLine);
-                    Console.WriteLine("Animals have been fed, Press any key to continue....");
-                    Console.ReadLine();
+                    Console.WriteLine("Animals have been fed....");
                 }
                 if (input.ToLower() == "x")
                 {
@@ -49,7 +47,7 @@ namespace Zoo_Simulator
 
                 Console.WriteLine("Waiting for next check up, please wait ....");
                 time++;
-                System.Threading.Thread.Sleep(3000);//20000
+                System.Threading.Thread.Sleep(20000);
             }
         }
     }

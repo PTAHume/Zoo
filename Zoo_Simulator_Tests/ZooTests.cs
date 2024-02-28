@@ -92,12 +92,12 @@ public class ZooTests
         Zoo.InitializeZoo();
         Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
 
-        // Act part 1
+        // Act
         Zoo.GetAnimalStatues();
         Zoo.UpdateAnimalsHealth();
         Zoo.GetAnimalStatues();
 
-        // Assert part 2
+        // Assert
         Assert.False(Zoo.GetGroupedAnimals().OfType<Elephant>().Any(), "All Elephants shoould be dead");
     }
 
@@ -107,19 +107,24 @@ public class ZooTests
         // Arrange
         Zoo.InitializeZoo();
         Zoo.GetGroupedAnimals().OfType<Elephant>().ToList().ForEach(x => x.Health = 69);
+        var count = 0;
 
         // Act
-        do
+        // Smetimes, you have to feed the elephants a few ties to get them back on there feet
+        // Safeguard against infinity loop, caped at 20 iterations
+        for (var i = 0; i <= 20; i++)
         {
             Zoo.GetAnimalStatues();
             Zoo.FeedAnimals();
             Zoo.GetAnimalStatues();
             Zoo.UpdateAnimalsHealth();
+            if ((Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.Health > 95) == 5))
+            {
+                break;
+            }
         }
-        // Smetimes you have to feed the elephants a few ties to get them back on there feet
-        while (Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.Health > 70) < 5);
 
-        // Assert part 2
+        // Assert
         Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count(x => x.CanWalk()) == 5);
         Assert.DoesNotContain(Zoo.GetGroupedAnimals().OfType<Elephant>(), x => x.IsDead());
         Assert.True(Zoo.GetGroupedAnimals().OfType<Elephant>().Count() == 5);

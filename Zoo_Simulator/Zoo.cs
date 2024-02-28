@@ -54,11 +54,7 @@ namespace Zoo_Simulator
                         break;
                 }
             }
-
-           // GetAnimalStatues();
-
         }
-
 
         public static void GetAnimalStatues()
         {
