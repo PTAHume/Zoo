@@ -6,34 +6,22 @@ jobs:
   build:
  
     runs-on:  windows-latest
- 
-    steps:
-    - uses: actions/checkout@v1
-      name: Checkout Code
-     
-    - name: Setup MSBuild Path
-      uses: phume/Setup-MSBuild@v1
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-       
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    
+    steps:      
+      - uses: actions/checkout@v2
+      
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@latest
 
-    - name: Setup VSTest
-      uses: Setup-VSTest@v1
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-     
-    - name: Restore NuGet Packages
-      run: nuget restore ./Zoo_Simulator/Zoo_Simulator.sln
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@latest
+        
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@latest
+
+      - name: Navigate to Workspace
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Restore Packages
+        run: nuget restore ./Zoo_Simulator/Zoo_Simulator.sln
  
-    - name: Build and Publish Web App
-      run: msbuild ./Zoo_Simulator/Zoo_Simulator.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
- 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: published_webapp
-        path: bin\Release\Publish
