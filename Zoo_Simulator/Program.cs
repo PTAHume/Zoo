@@ -6,24 +6,11 @@ namespace Zoo_Simulator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Type 'e' and press Enter to close the app \n");
+            Console.WriteLine("Wecome To Zoo Simulator v1.01 \n");
+
             Zoo.InitializeZoo();
-            while (true)
-            {
-                Zoo.Simulate();
-                var command = Console.ReadLine() ?? string.Empty;
-                if (string.Equals(command, "e", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
-
-            
-
-                if (string.Equals(command, "f", StringComparison.OrdinalIgnoreCase))
-                {
-                    //TO DO: Complete this
-                }
-            }
+            Zoo.Simulate();
+ 
         }
     }
 }

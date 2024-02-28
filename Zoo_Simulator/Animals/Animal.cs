@@ -18,5 +18,11 @@ namespace Zoo_Simulator
         public abstract void UpdateHealth(float percentage);
 
         public abstract bool IsDead();
+
+        public void Feed(float amount)
+        {
+            Health += Health * (amount / 100f);
+            Health = Math.Min(Health, 100f);
+        }
     }
 }

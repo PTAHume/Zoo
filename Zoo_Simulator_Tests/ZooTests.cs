@@ -11,18 +11,35 @@ namespace Zoo_Simulator_Tests
             // Arrange
             Zoo.InitializeZoo();
 
-            // Assert
+            // Act
             using (var consoleOutput = new ConsoleOutput())
             {
-                // Act
+                consoleOutput.SetIn("x");
                 Zoo.Simulate();
 
                 // Assert
                 List<string> list = consoleOutput.GetOuPut().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
-                Assert.True(list.Count(p => p == $"Type: {AnimalType.Monkey}, Health: 100%") == 5 , $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
-                Assert.True(list.Count(p => p == $"Type: {AnimalType.Giraffe}, Health: 100%") == 5, $"Zoo should have Has 5 {AnimalType.Giraffe}'s with 100% health");
-                Assert.True(list.Count(p => p == $"Type: {AnimalType.Elephant}, Health: 100%") == 5, $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
+                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Monkey}") &&  p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Monkey}'s with 100% health");
+                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Giraffe}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Giraffe}'s with 100% health");
+                Assert.True(list.Count(p => p.Contains($"Name: {AnimalType.Elephant}") && p.Contains($"Health: 100%")) == 5, $"Zoo should have Has 5 {AnimalType.Elephant}'s with 100% health");
             }
+        }
+
+        [Fact]
+        
+        public void CanFeedAnimals()
+        {
+            // Arrange
+            Zoo.InitializeZoo();
+            using var input = new StringReader("Any key");
+            Console.SetIn(input);
+
+            // Act
+            Zoo.GetGroupedAnimals().ForEach(x => x.Health = 50);
+            Zoo.FeedAnimals();
+
+            // Assert
+            Assert.DoesNotContain(Zoo.GetGroupedAnimals(), x => x.Health == 50);
         }
     }
 }
